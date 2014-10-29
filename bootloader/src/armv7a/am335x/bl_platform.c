@@ -432,7 +432,7 @@ unsigned int BootMaxOppGet(void)
     return oppIdx;
 }
 
-/* \brief This function initialize sthe CORE PLL 
+/* \brief This function initializes the CORE PLL 
  * 
  * \param none
  *
@@ -646,55 +646,6 @@ void DDRPLLInit(unsigned int freqMult)
 }
 
 /*
- * \brief This function initializes the Basic Clocks
- *
- * \param  none
- *
- * \return none
- */
-void BASICInit(void)
-{
-	volatile unsigned int regval = 0x0;
-
-	regval = HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKCTRL) 
-			& ~CM_PER_L3_CLKCTRL_MODULEMODE;	
-	regval |= CM_PER_L3_CLKCTRL_MODULEMODE_ENABLE;
-	HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKCTRL) = regval;
-
-
-	regval = HWREG(SOC_CM_PER_REGS + CM_PER_L4FW_CLKSTCTRL) 
-			& ~CM_PER_L4FW_CLKSTCTRL_CLKTRCTRL;	
-	regval |= CM_PER_L4FW_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-	HWREG(SOC_CM_PER_REGS + CM_PER_L4FW_CLKSTCTRL) = regval;
-
-	regval = HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) 
-			& ~CM_PER_L3S_CLKSTCTRL_CLKTRCTRL;	
-	regval |= CM_PER_L3S_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-	HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) = regval;
-
-	regval = HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) 
-			& ~CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL;	
-	regval |= CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-	HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) = regval;
-	
-	regval = HWREG(SOC_CM_WKUP_REGS + CM_WKUP_CLKSTCTRL) 
-			& ~CM_WKUP_CLKSTCTRL_CLKTRCTRL;	
-	regval |= CM_WKUP_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-	HWREG(SOC_CM_WKUP_REGS + CM_WKUP_CLKSTCTRL) = regval;
-	
-#if 0
-	regval = HWREG(SOC_CM_PER_REGS + CM_PER_EMIF_FW_CLKCTRL) 
-			& ~CM_PER_EMIF_FW_CLKCTRL_MODULEMODE;	
-	regval |= CM_PER_EMIF_FW_CLKCTRL_MODULEMODE_ENABLE;
-	HWREG(SOC_CM_PER_REGS + CM_PER_EMIF_FW_CLKCTRL) = regval;
-#endif	
-	regval = HWREG(SOC_CM_RTC_REGS + CM_RTC_CLKSTCTRL) 
-			& ~CM_RTC_CLKSTCTRL_CLKTRCTRL;	
-	regval |= CM_RTC_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-	HWREG(SOC_CM_PER_REGS + CM_RTC_CLKSTCTRL) = regval;
-	
-}
-/*
  * \brief This function initializes the MPU PLL
  *
  * \param  none
@@ -794,136 +745,8 @@ void InterfaceClkInit(void)
     while((HWREG(SOC_CM_PER_REGS + CM_PER_L4HS_CLKCTRL) &
                         CM_PER_L4HS_CLKCTRL_MODULEMODE) !=
                   CM_PER_L4HS_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_WKUP_REGS + CM_WKUP_GPIO0_CLKCTRL) |=
-                             CM_WKUP_GPIO0_CLKCTRL_MODULEMODE_ENABLE; 
-
-    while((HWREG(SOC_CM_WKUP_REGS + CM_WKUP_GPIO0_CLKCTRL) &
-                        CM_WKUP_GPIO0_CLKCTRL_MODULEMODE) !=
-                  CM_WKUP_GPIO0_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_WKUP_REGS + CM_WKUP_CONTROL_CLKCTRL) |=
-                             CM_WKUP_CONTROL_CLKCTRL_MODULEMODE_ENABLE; 
-
-    while((HWREG(SOC_CM_WKUP_REGS + CM_WKUP_CONTROL_CLKCTRL) &
-                        CM_WKUP_CONTROL_CLKCTRL_MODULEMODE) !=
-                  CM_WKUP_CONTROL_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_TIMER2_CLKCTRL) |=
-                             CM_PER_TIMER2_CLKCTRL_MODULEMODE_ENABLE; 
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_TIMER2_CLKCTRL) & 
-                        CM_PER_TIMER2_CLKCTRL_MODULEMODE) !=
-                  CM_PER_TIMER2_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_GPMC_CLKCTRL) |=
-                             CM_PER_GPMC_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_GPMC_CLKCTRL) &
-                        CM_PER_GPMC_CLKCTRL_MODULEMODE) !=
-                  CM_PER_GPMC_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_ELM_CLKCTRL) |=
-                             CM_PER_ELM_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_ELM_CLKCTRL) &
-                        CM_PER_ELM_CLKCTRL_MODULEMODE) !=
-                  CM_PER_ELM_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_MMC0_CLKCTRL) |=
-                             CM_PER_MMC0_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_MMC0_CLKCTRL) &
-                        CM_PER_MMC0_CLKCTRL_MODULEMODE) !=
-                  CM_PER_MMC0_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_MMC1_CLKCTRL) |=
-                             CM_PER_MMC1_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_MMC1_CLKCTRL) &
-                        CM_PER_MMC1_CLKCTRL_MODULEMODE) !=
-                  CM_PER_MMC1_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_WKUP_REGS + CM_WKUP_I2C0_CLKCTRL) |=
-                             CM_WKUP_I2C0_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_WKUP_REGS + CM_WKUP_I2C0_CLKCTRL) &
-                        CM_WKUP_I2C0_CLKCTRL_MODULEMODE) !=
-                  CM_WKUP_I2C0_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_GPIO1_CLKCTRL) |=
-                             CM_PER_GPIO1_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_GPIO1_CLKCTRL) &
-                        CM_PER_GPIO1_CLKCTRL_MODULEMODE) !=
-                  CM_PER_GPIO1_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_GPIO2_CLKCTRL) |=
-                             CM_PER_GPIO2_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_GPIO2_CLKCTRL) &
-                        CM_PER_GPIO2_CLKCTRL_MODULEMODE) !=
-                  CM_PER_GPIO2_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_GPIO3_CLKCTRL) |=
-                             CM_PER_GPIO3_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_GPIO3_CLKCTRL) &
-                        CM_PER_GPIO3_CLKCTRL_MODULEMODE) !=
-                  CM_PER_GPIO3_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_I2C1_CLKCTRL) |=
-                             CM_PER_I2C1_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_I2C1_CLKCTRL) &
-                        CM_PER_I2C1_CLKCTRL_MODULEMODE) !=
-                  CM_PER_I2C1_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_CPGMAC0_CLKCTRL) |=
-                             CM_PER_CPGMAC0_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_CPGMAC0_CLKCTRL) &
-                        CM_PER_CPGMAC0_CLKCTRL_MODULEMODE) !=
-                  CM_PER_CPGMAC0_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_SPI0_CLKCTRL) |=
-                             CM_PER_SPI0_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_SPI0_CLKCTRL) &
-                        CM_PER_SPI0_CLKCTRL_MODULEMODE) !=
-                  CM_PER_SPI0_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_RTC_REGS + CM_RTC_RTC_CLKCTRL) |=
-			CM_RTC_RTC_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_RTC_REGS + CM_RTC_RTC_CLKCTRL) &
-                        CM_RTC_RTC_CLKCTRL_MODULEMODE) !=
-                  CM_RTC_RTC_CLKCTRL_MODULEMODE_ENABLE);
-
-   HWREG(SOC_CM_PER_REGS + CM_PER_USB0_CLKCTRL) |=
-                             CM_PER_USB0_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_USB0_CLKCTRL) &
-                        CM_PER_USB0_CLKCTRL_MODULEMODE) !=
-                  CM_PER_USB0_CLKCTRL_MODULEMODE_ENABLE);
-
-#if 0
-   HWREG(SOC_CM_PER_REGS + CM_PER_EMIF_FW_CLKCTRL) |=
-                             CM_PER_EMIF_FW_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_EMIF_FW_CLKCTRL) &
-                        CM_PER_EMIF_FW_CLKCTRL_MODULEMODE) !=
-                  CM_PER_EMIF_FW_CLKCTRL_MODULEMODE_ENABLE);
-#endif
-   HWREG(SOC_CM_PER_REGS + CM_PER_EMIF_CLKCTRL) |=
-                             CM_PER_EMIF_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_EMIF_CLKCTRL) &
-                        CM_PER_EMIF_CLKCTRL_MODULEMODE) !=
-                  CM_PER_EMIF_CLKCTRL_MODULEMODE_ENABLE);
-
-
 }
+
 /* \brief This function initializes the power domain transition.
  * 
  * \param none
@@ -959,14 +782,13 @@ void PowerDomainTransitionInit(void)
  */
 void PLLInit(void)
 {
-    BASICInit();	/* init the basic clocks */
-    InterfaceClkInit();
     MPUPLLInit(oppTable[oppMaxIdx].pllMult);
     CorePLLInit();
     PerPLLInit();
     DDRPLLInit(freqMultDDR);
-    //PowerDomainTransitionInit();
-    //DisplayPLLInit();
+    InterfaceClkInit();
+    PowerDomainTransitionInit();
+    DisplayPLLInit();
 }
 
 /*
@@ -1570,9 +1392,7 @@ static void DDR2PhyInit(void)
 }
 /*
  * \brief This function sets up the DDR PHY
- *  1. enables VTP - config_vtp
- *  2. configures DDR CMD - config_cmd_ctrl
- *  3. configure DDR DATA - config_ddr_data
+ *
  * \param  none
  *
  * \return none
@@ -1612,11 +1432,7 @@ static void DDR3PhyInit(void)
 
 
 /* \brief This function initializes the DDR2
- *  
- * config_io_ctrl
- * config_ddr_phy
- * set_sdram_timings
- * config_sdram
+ * 
  * \param none
  *
  * \return none
@@ -1770,601 +1586,6 @@ void DDR2Init(void)
 #error "---------------------------------------------------"
 #endif
 
-typedef unsigned int u32;
-
-#define dmb()           __asm__ __volatile__ ("" : : : "memory")
-#define __iowmb()       dmb()
-#define __iormb()       dmb()
-#define __arch_putl(v,a)                (*(volatile unsigned int *)(a) = (v))
-#define __arch_getl(a)                  (*(volatile unsigned int *)(a))
-
-#define writel(v,c)     ({ u32 __v = v; __iowmb(); __arch_putl(__v,c); __v; })
-#define readl(c)        ({ u32 __v = __arch_getl(c); __iormb(); __v; })
-
-
-/* VTP Registers */
-struct vtp_reg {
-        unsigned int vtp0ctrlreg;
-};     
-
-/* VTP Base Address */
-#define VTP0_CTRL_ADDR	0x44E10E0C
-#define VTP1_CTRL_ADDR	0x44E10E10
-
-/* AM335X EMIF Register values */
-#define VTP_CTRL_READY          (0x1 << 5)
-#define VTP_CTRL_ENABLE         (0x1 << 6)
-#define VTP_CTRL_START_EN       (0x1)
-
-static struct vtp_reg *vtpreg[2] = {
-                                (struct vtp_reg *)VTP0_CTRL_ADDR,
-                                (struct vtp_reg *)VTP1_CTRL_ADDR};
-
-
-void config_vtp(int nr)
-{
-      writel(readl(&vtpreg[nr]->vtp0ctrlreg) | VTP_CTRL_ENABLE,
-                        &vtpreg[nr]->vtp0ctrlreg);
-        writel(readl(&vtpreg[nr]->vtp0ctrlreg) & (~VTP_CTRL_START_EN),
-                        &vtpreg[nr]->vtp0ctrlreg);
-        writel(readl(&vtpreg[nr]->vtp0ctrlreg) | VTP_CTRL_START_EN,
-                        &vtpreg[nr]->vtp0ctrlreg);
-        
-        /* Poll for READY */
-        while ((readl(&vtpreg[nr]->vtp0ctrlreg) & VTP_CTRL_READY) !=
-                        VTP_CTRL_READY)
-                ;
-
-}
-
-/**
- * Encapsulates DDR CMD control registers.
- */     
-struct cmd_control {
-        unsigned long cmd0csratio;
-        unsigned long cmd0csforce;
-        unsigned long cmd0csdelay;
-        unsigned long cmd0iclkout;
-        unsigned long cmd1csratio;
-        unsigned long cmd1csforce;
-        unsigned long cmd1csdelay;
-        unsigned long cmd1iclkout;
-        unsigned long cmd2csratio;
-        unsigned long cmd2csforce;
-        unsigned long cmd2csdelay;
-        unsigned long cmd2iclkout;
-};      
-
-
-/* Micron MT41K256M16HA-125E */
-#define MT41K256M16HA125E_EMIF_READ_LATENCY     0x100007
-#define MT41K256M16HA125E_EMIF_TIM1             0x0AAAD4DB
-#define MT41K256M16HA125E_EMIF_TIM2             0x266B7FDA
-#define MT41K256M16HA125E_EMIF_TIM3             0x501F867F
-#define MT41K256M16HA125E_EMIF_SDCFG            0x61C05332
-#define MT41K256M16HA125E_EMIF_SDREF            0xC30
-#define MT41K256M16HA125E_ZQ_CFG                0x50074BE4
-#define MT41K256M16HA125E_RATIO                 0x80
-#define MT41K256M16HA125E_INVERT_CLKOUT         0x0
-#define MT41K256M16HA125E_RD_DQS                0x38
-#define MT41K256M16HA125E_WR_DQS                0x44
-#define MT41K256M16HA125E_PHY_WR_DATA           0x7D
-#define MT41K256M16HA125E_PHY_FIFO_WE           0x94
-#define MT41K256M16HA125E_IOCTRL_VALUE          0x18B
-
-static const struct cmd_control ddr3_beagleblack_cmd_ctrl_data = {
-        .cmd0csratio = MT41K256M16HA125E_RATIO,
-        .cmd0iclkout = MT41K256M16HA125E_INVERT_CLKOUT,
-
-        .cmd1csratio = MT41K256M16HA125E_RATIO,
-        .cmd1iclkout = MT41K256M16HA125E_INVERT_CLKOUT,
-
-        .cmd2csratio = MT41K256M16HA125E_RATIO,
-        .cmd2iclkout = MT41K256M16HA125E_INVERT_CLKOUT,
-};
-
-/* DDR Base address */
-#define DDR_PHY_CMD_ADDR                0x44E12000
-#define DDR_PHY_DATA_ADDR               0x44E120C8
-#define DDR_PHY_CMD_ADDR2               0x47C0C800
-#define DDR_PHY_DATA_ADDR2              0x47C0C8C8
-#define DDR_DATA_REGS_NR                2
-
-
-struct ddr_cmd_regs {
-        unsigned int resv0[7];  
-        unsigned int cm0csratio;        /* offset 0x01C */
-        unsigned int resv1[3];
-        unsigned int cm0iclkout;        /* offset 0x02C */
-        unsigned int resv2[8];  
-        unsigned int cm1csratio;        /* offset 0x050 */
-        unsigned int resv3[3];
-        unsigned int cm1iclkout;        /* offset 0x060 */
-        unsigned int resv4[8];
-        unsigned int cm2csratio;        /* offset 0x084 */
-        unsigned int resv5[3];
-        unsigned int cm2iclkout;        /* offset 0x094 */
-        unsigned int resv6[3];
-};
-
-/**
- * Base addresses for DDR PHY cmd/data regs
- */
-static struct ddr_cmd_regs *ddr_cmd_reg[2] = {
-                                (struct ddr_cmd_regs *)DDR_PHY_CMD_ADDR,
-                                (struct ddr_cmd_regs *)DDR_PHY_CMD_ADDR2};
-
-
-/**
- * Configure DDR CMD control registers
- */     
-void config_cmd_ctrl(const struct cmd_control *cmd, int nr)
-{
-
-      if (!cmd)
-                return;
-                
-        writel(cmd->cmd0csratio, &ddr_cmd_reg[nr]->cm0csratio);
-        writel(cmd->cmd0iclkout, &ddr_cmd_reg[nr]->cm0iclkout);
-
-        writel(cmd->cmd1csratio, &ddr_cmd_reg[nr]->cm1csratio);
-        writel(cmd->cmd1iclkout, &ddr_cmd_reg[nr]->cm1iclkout);
-        
-        writel(cmd->cmd2csratio, &ddr_cmd_reg[nr]->cm2csratio);
-        writel(cmd->cmd2iclkout, &ddr_cmd_reg[nr]->cm2iclkout);
-}
-
-/**
- * Encapsulates DDR DATA registers.
- */
-struct ddr_data {
-        unsigned long datardsratio0;
-        unsigned long datawdsratio0;
-        unsigned long datawiratio0;
-        unsigned long datagiratio0;
-        unsigned long datafwsratio0;
-        unsigned long datawrsratio0;
-};    
-
-struct ddr_data_regs {
-        unsigned int dt0rdsratio0;      /* offset 0x0C8 */
-        unsigned int resv1[4];  
-        unsigned int dt0wdsratio0;      /* offset 0x0DC */
-        unsigned int resv2[4];
-        unsigned int dt0wiratio0;       /* offset 0x0F0 */
-        unsigned int resv3;     
-        unsigned int dt0wimode0;        /* offset 0x0F8 */
-        unsigned int dt0giratio0;       /* offset 0x0FC */
-        unsigned int resv4;
-        unsigned int dt0gimode0;        /* offset 0x104 */
-        unsigned int dt0fwsratio0;      /* offset 0x108 */
-        unsigned int resv5[4];
-        unsigned int dt0dqoffset;       /* offset 0x11C */
-        unsigned int dt0wrsratio0;      /* offset 0x120 */
-        unsigned int resv6[4];
-        unsigned int dt0rdelays0;       /* offset 0x134 */
-        unsigned int dt0dldiff0;        /* offset 0x138 */
-        unsigned int resv7[12];
-};
-
-static const struct ddr_data ddr3_beagleblack_data = {
-        .datardsratio0 = MT41K256M16HA125E_RD_DQS,
-        .datawdsratio0 = MT41K256M16HA125E_WR_DQS,
-        .datafwsratio0 = MT41K256M16HA125E_PHY_FIFO_WE,
-        .datawrsratio0 = MT41K256M16HA125E_PHY_WR_DATA,
-};
-
-static struct ddr_data_regs *ddr_data_reg[2] = {
-                                (struct ddr_data_regs *)DDR_PHY_DATA_ADDR,
-                                (struct ddr_data_regs *)DDR_PHY_DATA_ADDR2};
-
-
-void config_ddr_data(const struct ddr_data *data, int nr)
-{
-       int i;
-
-        if (!data)
-                return;
-
-        for (i = 0; i < DDR_DATA_REGS_NR; i++) {
-                writel(data->datardsratio0,
-                        &(ddr_data_reg[nr]+i)->dt0rdsratio0);
-                writel(data->datawdsratio0,
-                        &(ddr_data_reg[nr]+i)->dt0wdsratio0);
-                writel(data->datawiratio0,
-                        &(ddr_data_reg[nr]+i)->dt0wiratio0);
-                writel(data->datagiratio0,
-                        &(ddr_data_reg[nr]+i)->dt0giratio0);
-                writel(data->datafwsratio0,
-                        &(ddr_data_reg[nr]+i)->dt0fwsratio0);
-                writel(data->datawrsratio0,
-                        &(ddr_data_reg[nr]+i)->dt0wrsratio0);
-        }
-
-}
-
-/* DDR Base address */ 
-#define DDR_CTRL_ADDR                   0x44E10E04
-#define DDR_CONTROL_BASE_ADDR           0x44E11404
-
-/**
- * This structure represents the DDR io control on AM33XX devices.
- */
-struct ddr_cmdtctrl {
-        unsigned int cm0ioctl;
-        unsigned int cm1ioctl;
-        unsigned int cm2ioctl;
-        unsigned int resv2[12];
-        unsigned int dt0ioctl;
-        unsigned int dt1ioctl;
-        unsigned int dt2ioctrl;
-        unsigned int dt3ioctrl;
-        unsigned int resv3[4];
-        unsigned int emif_sdram_config_ext;
-};
-
-
-struct ddr_ctrl {
-        unsigned int ddrioctrl;
-        unsigned int resv1[325];
-        unsigned int ddrckectrl;
-};
-
-/**
- * Base address for ddr io control instances
- */
-static struct ddr_cmdtctrl *ioctrl_reg = {
-                        (struct ddr_cmdtctrl *)DDR_CONTROL_BASE_ADDR};
-
-static struct ddr_ctrl *ddrctrl = (struct ddr_ctrl *)DDR_CTRL_ADDR;
-#define DDR_CKE_CTRL_NORMAL     0x1
-
-
-struct ctrl_ioregs {
-        unsigned int cm0ioctl;
-        unsigned int cm1ioctl;
-        unsigned int cm2ioctl;
-        unsigned int dt0ioctl;
-        unsigned int dt1ioctl;
-        unsigned int dt2ioctrl;
-        unsigned int dt3ioctrl;
-        unsigned int emif_sdram_config_ext;
-};      
-
-const struct ctrl_ioregs ioregs_bonelt = {
-        .cm0ioctl               = MT41K256M16HA125E_IOCTRL_VALUE,
-        .cm1ioctl               = MT41K256M16HA125E_IOCTRL_VALUE,
-        .cm2ioctl               = MT41K256M16HA125E_IOCTRL_VALUE,
-        .dt0ioctl               = MT41K256M16HA125E_IOCTRL_VALUE,
-        .dt1ioctl               = MT41K256M16HA125E_IOCTRL_VALUE,
-};
-
-
-void config_io_ctrl(const struct ctrl_ioregs *ioregs)
-{
-
-        if (!ioregs)
-                return;
-        
-        writel(ioregs->cm0ioctl, &ioctrl_reg->cm0ioctl);
-        writel(ioregs->cm1ioctl, &ioctrl_reg->cm1ioctl);
-        writel(ioregs->cm2ioctl, &ioctrl_reg->cm2ioctl);
-        writel(ioregs->dt0ioctl, &ioctrl_reg->dt0ioctl);
-        writel(ioregs->dt1ioctl, &ioctrl_reg->dt1ioctl);
-}
-
-
-/* Base address */
-#define EMIF1_BASE                              0x4c000000
-#define EMIF2_BASE                              0x4d000000
-
-/*
- * Structure containing shadow of important registers in EMIF
- * The calculation function fills in this structure to be later used for
- * initialization and DVFS
- */
-struct emif_regs {
-        unsigned int freq;
-        unsigned int sdram_config_init;
-        unsigned int sdram_config;
-        unsigned int sdram_config2;
-        unsigned int ref_ctrl;
-        unsigned int sdram_tim1;
-        unsigned int sdram_tim2;
-        unsigned int sdram_tim3;
-        unsigned int read_idle_ctrl;
-        unsigned int zq_config;
-        unsigned int temp_alert_config;
-        unsigned int emif_ddr_phy_ctlr_1_init;
-        unsigned int emif_ddr_phy_ctlr_1;
-        unsigned int emif_ddr_ext_phy_ctrl_1;
-        unsigned int emif_ddr_ext_phy_ctrl_2;
-        unsigned int emif_ddr_ext_phy_ctrl_3;
-        unsigned int emif_ddr_ext_phy_ctrl_4;
-        unsigned int emif_ddr_ext_phy_ctrl_5;
-        unsigned int emif_rd_wr_lvl_rmp_win;
-        unsigned int emif_rd_wr_lvl_rmp_ctl;
-        unsigned int emif_rd_wr_lvl_ctl;
-        unsigned int emif_rd_wr_exec_thresh;
-        unsigned int emif_prio_class_serv_map;
-        unsigned int emif_connect_id_serv_1_map;
-        unsigned int emif_connect_id_serv_2_map;
-        unsigned int emif_cos_config;
-};
-static struct emif_regs ddr3_beagleblack_emif_reg_data = {
-        .sdram_config = MT41K256M16HA125E_EMIF_SDCFG,
-        .ref_ctrl = MT41K256M16HA125E_EMIF_SDREF,
-        .sdram_tim1 = MT41K256M16HA125E_EMIF_TIM1,
-        .sdram_tim2 = MT41K256M16HA125E_EMIF_TIM2,
-        .sdram_tim3 = MT41K256M16HA125E_EMIF_TIM3,
-        .zq_config = MT41K256M16HA125E_ZQ_CFG,
-        .emif_ddr_phy_ctlr_1 = MT41K256M16HA125E_EMIF_READ_LATENCY,
-};
-
-
-/* EMIF Base address */ 
-#define EMIF4_0_CFG_BASE                0x4C000000
-#define EMIF4_1_CFG_BASE                0x4D000000
-
-/* Reg mapping structure */
-struct emif_reg_struct {        
-        u32 emif_mod_id_rev;    
-        u32 emif_status;
-        u32 emif_sdram_config;
-        u32 emif_lpddr2_nvm_config;
-        u32 emif_sdram_ref_ctrl;
-        u32 emif_sdram_ref_ctrl_shdw;
-        u32 emif_sdram_tim_1;   
-        u32 emif_sdram_tim_1_shdw;
-        u32 emif_sdram_tim_2;
-        u32 emif_sdram_tim_2_shdw;
-        u32 emif_sdram_tim_3;   
-        u32 emif_sdram_tim_3_shdw;
-        u32 emif_lpddr2_nvm_tim;
-        u32 emif_lpddr2_nvm_tim_shdw;
-        u32 emif_pwr_mgmt_ctrl;
-        u32 emif_pwr_mgmt_ctrl_shdw;
-        u32 emif_lpddr2_mode_reg_data; 
-        u32 padding1[1];
-        u32 emif_lpddr2_mode_reg_data_es2;
-        u32 padding11[1];
-        u32 emif_lpddr2_mode_reg_cfg;
-        u32 emif_l3_config;
-        u32 emif_l3_cfg_val_1;
-        u32 emif_l3_cfg_val_2;
-        u32 emif_iodft_tlgc;
-        u32 padding2[7];
-        u32 emif_perf_cnt_1;
-        u32 emif_perf_cnt_2;
-        u32 emif_perf_cnt_cfg;
-        u32 emif_perf_cnt_sel;
-        u32 emif_perf_cnt_tim;
-        u32 padding3;
-        u32 emif_read_idlectrl;
-        u32 emif_read_idlectrl_shdw;
-        u32 padding4;
-        u32 emif_irqstatus_raw_sys;
- u32 emif_irqstatus_raw_ll;
-        u32 emif_irqstatus_sys;
-        u32 emif_irqstatus_ll;
-        u32 emif_irqenable_set_sys;
-        u32 emif_irqenable_set_ll;
-        u32 emif_irqenable_clr_sys;
-        u32 emif_irqenable_clr_ll;
-        u32 padding5;
-        u32 emif_zq_config;
-        u32 emif_temp_alert_config;
-        u32 emif_l3_err_log;
-        u32 emif_rd_wr_lvl_rmp_win;
-        u32 emif_rd_wr_lvl_rmp_ctl;
-        u32 emif_rd_wr_lvl_ctl;
-        u32 padding6[1];
-        u32 emif_ddr_phy_ctrl_1;
-        u32 emif_ddr_phy_ctrl_1_shdw;
-        u32 emif_ddr_phy_ctrl_2;
-        u32 padding7[4];
-        u32 emif_prio_class_serv_map;
-        u32 emif_connect_id_serv_1_map;
-        u32 emif_connect_id_serv_2_map;
-        u32 padding8[5];
-        u32 emif_rd_wr_exec_thresh;
-        u32 emif_cos_config;
-        u32 padding9[6];
-        u32 emif_ddr_phy_status[21];
-        u32 padding10[27];
-        u32 emif_ddr_ext_phy_ctrl_1;
-        u32 emif_ddr_ext_phy_ctrl_1_shdw;
-        u32 emif_ddr_ext_phy_ctrl_2;
-        u32 emif_ddr_ext_phy_ctrl_2_shdw;
-        u32 emif_ddr_ext_phy_ctrl_3;
-        u32 emif_ddr_ext_phy_ctrl_3_shdw;
-        u32 emif_ddr_ext_phy_ctrl_4;
-        u32 emif_ddr_ext_phy_ctrl_4_shdw;
-u32 emif_ddr_ext_phy_ctrl_5;
-        u32 emif_ddr_ext_phy_ctrl_5_shdw;
-        u32 emif_ddr_ext_phy_ctrl_6;
-        u32 emif_ddr_ext_phy_ctrl_6_shdw;
-        u32 emif_ddr_ext_phy_ctrl_7;
-        u32 emif_ddr_ext_phy_ctrl_7_shdw;
-        u32 emif_ddr_ext_phy_ctrl_8;
-        u32 emif_ddr_ext_phy_ctrl_8_shdw;
-        u32 emif_ddr_ext_phy_ctrl_9;
-        u32 emif_ddr_ext_phy_ctrl_9_shdw;
-        u32 emif_ddr_ext_phy_ctrl_10;
-        u32 emif_ddr_ext_phy_ctrl_10_shdw;
-        u32 emif_ddr_ext_phy_ctrl_11;
-        u32 emif_ddr_ext_phy_ctrl_11_shdw;
-        u32 emif_ddr_ext_phy_ctrl_12;
-        u32 emif_ddr_ext_phy_ctrl_12_shdw;
-        u32 emif_ddr_ext_phy_ctrl_13;
-        u32 emif_ddr_ext_phy_ctrl_13_shdw;
-        u32 emif_ddr_ext_phy_ctrl_14;
-        u32 emif_ddr_ext_phy_ctrl_14_shdw;
-        u32 emif_ddr_ext_phy_ctrl_15;
-        u32 emif_ddr_ext_phy_ctrl_15_shdw;
-        u32 emif_ddr_ext_phy_ctrl_16;
-        u32 emif_ddr_ext_phy_ctrl_16_shdw;
-        u32 emif_ddr_ext_phy_ctrl_17;
-        u32 emif_ddr_ext_phy_ctrl_17_shdw;
-        u32 emif_ddr_ext_phy_ctrl_18;
-        u32 emif_ddr_ext_phy_ctrl_18_shdw;
-        u32 emif_ddr_ext_phy_ctrl_19;
-        u32 emif_ddr_ext_phy_ctrl_19_shdw;
-        u32 emif_ddr_ext_phy_ctrl_20;
-        u32 emif_ddr_ext_phy_ctrl_20_shdw;
-        u32 emif_ddr_ext_phy_ctrl_21;
-        u32 emif_ddr_ext_phy_ctrl_21_shdw;
-        u32 emif_ddr_ext_phy_ctrl_22;
-        u32 emif_ddr_ext_phy_ctrl_22_shdw;
-        u32 emif_ddr_ext_phy_ctrl_23;
-u32 emif_ddr_ext_phy_ctrl_23_shdw;
-        u32 emif_ddr_ext_phy_ctrl_24;
-        u32 emif_ddr_ext_phy_ctrl_24_shdw;
-        u32 padding[22];
-        u32 emif_ddr_fifo_misaligned_clear_1;
-        u32 emif_ddr_fifo_misaligned_clear_2;
-};
-
-/**
- * Base address for EMIF instances
- */
-static struct emif_reg_struct *emif_reg[2] = {
-                                (struct emif_reg_struct *)EMIF4_0_CFG_BASE,
-                                (struct emif_reg_struct *)EMIF4_1_CFG_BASE};
-
-#define EMIF_REG_INITREF_DIS_MASK                       (1 << 31)
-#define EMIF_REG_MAJOR_REVISION_MASK            (0x7 << 8)
-#define EMIF_REG_MAJOR_REVISION_SHIFT           8
-#define EMIF_4D5                                0x5
-
-
-#define EMIF_EXT_PHY_CTRL_TIMING_REG    0x5
-
-/*
- * Configure EXT PHY registers
- */
-static void ext_phy_settings(const struct emif_regs *regs, int nr)
-{
-      u32 *ext_phy_ctrl_base = 0;
-        u32 *emif_ext_phy_ctrl_base = 0;
-        u32 i = 0;
-        u32 size = 0;
-
-        ext_phy_ctrl_base = (u32 *)&(regs->emif_ddr_ext_phy_ctrl_1);
-        emif_ext_phy_ctrl_base =
-                        (u32 *)&(emif_reg[nr]->emif_ddr_ext_phy_ctrl_1);
-
-        /* Configure external phy control timing registers */
-        for (i = 0; i < EMIF_EXT_PHY_CTRL_TIMING_REG; i++) {
-                writel(*ext_phy_ctrl_base, emif_ext_phy_ctrl_base++);
-                /* Update shadow registers */
-                writel(*ext_phy_ctrl_base++, emif_ext_phy_ctrl_base++);
-        }
-	 if (!size)
-                return;
-
-
-
-}
-static inline unsigned int get_emif_rev(u32 base)
-{               
-        struct emif_reg_struct *emif = (struct emif_reg_struct *)base;
-        
-        return (readl(&emif->emif_mod_id_rev) & EMIF_REG_MAJOR_REVISION_MASK)
-                >> EMIF_REG_MAJOR_REVISION_SHIFT;
-}
-# define cpu_to_le32(x)         (x)
-# define le32_to_cpu(x)         (x)
-
-#define __raw_readl(a)          __arch_getl(a)
-#define __raw_writel(v,a)       __arch_putl(v,a)
-
-#define out_arch(type,endian,a,v)       __raw_write##type(cpu_to_##endian(v),a)
-#define in_arch(type,endian,a)          endian##_to_cpu(__raw_read##type(a))
-
-
-#define in_le32(a)      in_arch(l,le32,a)
-#define out_le32(a,v)   out_arch(l,le32,a,v)
-
-#define setbits(type, addr, set) \
-        out_##type((addr), in_##type(addr) | (set))
-#define setbits_le32(addr, set) setbits(le32, addr, set)
-
-void config_ddr_phy(const struct emif_regs *regs, int nr)
-{
-
-      /*      
-         * disable initialization and refreshes for now until we
-         * finish programming EMIF regs.
-         */
-	setbits_le32(&emif_reg[nr]->emif_sdram_ref_ctrl,
-                     EMIF_REG_INITREF_DIS_MASK);
-
-        
-        writel(regs->emif_ddr_phy_ctlr_1,
-                &emif_reg[nr]->emif_ddr_phy_ctrl_1);
-        writel(regs->emif_ddr_phy_ctlr_1,
-                &emif_reg[nr]->emif_ddr_phy_ctrl_1_shdw);
-
-      if (get_emif_rev((u32)emif_reg[nr]) == EMIF_4D5)
-                ext_phy_settings(regs, nr);
-
-
-}
-
-
-
-/**                        
- * Set SDRAM timings
- */     
-void set_sdram_timings(const struct emif_regs *regs, int nr)
-{
-
-        writel(regs->sdram_tim1, &emif_reg[nr]->emif_sdram_tim_1);
-        writel(regs->sdram_tim1, &emif_reg[nr]->emif_sdram_tim_1_shdw);
-        writel(regs->sdram_tim2, &emif_reg[nr]->emif_sdram_tim_2);
-        writel(regs->sdram_tim2, &emif_reg[nr]->emif_sdram_tim_2_shdw);
-        writel(regs->sdram_tim3, &emif_reg[nr]->emif_sdram_tim_3);
-        writel(regs->sdram_tim3, &emif_reg[nr]->emif_sdram_tim_3_shdw);
-}
-
-/* Control Module Base Address */
-#define CTRL_BASE                       0x44E10000
-#define CTRL_DEVICE_BASE                0x44E10600
-
-
-/* Control Status Register */
-struct ctrl_stat {
-        unsigned int resv1[16];
-        unsigned int statusreg;         /* ofset 0x40 */
-        unsigned int resv2[51];
-        unsigned int secure_emif_sdram_config;  /* offset 0x0110 */
-        unsigned int resv3[319];
-        unsigned int dev_attr;
-};
-
-struct ctrl_stat *cstat = (struct ctrl_stat *)CTRL_BASE;
-
-void config_sdram(const struct emif_regs *regs, int nr)
-{
-      if (regs->zq_config) {
-                /*
-                 * A value of 0x2800 for the REF CTRL will give us
-                 * about 570us for a delay, which will be long enough
-                 * to configure things.
-                 */
-                writel(0x2800, &emif_reg[nr]->emif_sdram_ref_ctrl);
-                writel(regs->zq_config, &emif_reg[nr]->emif_zq_config);
-                writel(regs->sdram_config, &cstat->secure_emif_sdram_config);
-                writel(regs->sdram_config, &emif_reg[nr]->emif_sdram_config);
-                writel(regs->ref_ctrl, &emif_reg[nr]->emif_sdram_ref_ctrl);
-                writel(regs->ref_ctrl, &emif_reg[nr]->emif_sdram_ref_ctrl_shdw);
-        }
-        writel(regs->ref_ctrl, &emif_reg[nr]->emif_sdram_ref_ctrl);
-        writel(regs->ref_ctrl, &emif_reg[nr]->emif_sdram_ref_ctrl_shdw);
-        writel(regs->sdram_config, &emif_reg[nr]->emif_sdram_config);
-
-}
 /* \brief This function initializes the EMIF
  * 
  * \param none
@@ -2607,9 +1828,6 @@ void UARTSetup(void)
     UARTStdioInit();
 }
 
-
-
-
 /*
  * \brief This function Initializes Pll, DDR and Uart
  *
@@ -2621,22 +1839,18 @@ void BlPlatformConfig(void)
 {
     BoardInfoInit();
     deviceVersion = DeviceVersionGet();
-    
-#if 0
     ConfigVddOpVoltage();
 
     oppMaxIdx = BootMaxOppGet();
 
     SetVdd1OpVoltage(oppTable[oppMaxIdx].pmicVolt);
-#endif
-	/* Disable the WDT */
+
     HWREG(SOC_WDT_1_REGS + WDT_WSPR) = 0xAAAAu;
     while(HWREG(SOC_WDT_1_REGS + WDT_WWPS) != 0x00);
 
     HWREG(SOC_WDT_1_REGS + WDT_WSPR) = 0x5555u;
     while(HWREG(SOC_WDT_1_REGS + WDT_WWPS) != 0x00);
 
-#if 0
     /* Configure DDR frequency */
 #ifdef evmskAM335x
     freqMultDDR = DDRPLL_M_DDR3;
@@ -2652,54 +1866,38 @@ void BlPlatformConfig(void)
 #else
     freqMultDDR = DDRPLL_M_DDR2;
 #endif
-#endif
+
     /* Set the PLL0 to generate 300MHz for ARM */
-    freqMultDDR = DDRPLL_M_DDR3;
     PLLInit();
-    EMIFInit();
-    //DDRVTTEnable();
-    /*    DDR3Init();*/
-#if 1
-    /* Enable the control module */ /*already done in InterfaceClock init*/
+
+    /* Enable the control module */
     HWREG(SOC_CM_WKUP_REGS + CM_WKUP_CONTROL_CLKCTRL) =
             CM_WKUP_CONTROL_CLKCTRL_MODULEMODE_ENABLE;
+
     /* EMIF Initialization */
+    EMIFInit();
 
     /* DDR Initialization */
 
 #ifdef evmskAM335x
-
     /* Enable DDR_VTT */
+    DDRVTTEnable();
     DDR3Init();
 #elif evmAM335x
-
     if(BOARD_ID_EVM_DDR3 == BoardIdGet())
     {
+        DDR3Init();
     }
     else if(BOARD_ID_EVM_DDR2 == BoardIdGet())
     {
         DDR2Init();
     }
 #else
-
-//    DDR2Init();
+    DDR2Init();
 #endif
-#endif
-   
-    config_vtp(0);
-    config_cmd_ctrl(&ddr3_beagleblack_cmd_ctrl_data,0);
-    config_ddr_data(&ddr3_beagleblack_data, 0);
-    config_io_ctrl(&ioregs_bonelt);
 
-        /* Set CKE to be controlled by EMIF/DDR PHY */
-    writel(DDR_CKE_CTRL_NORMAL, &ddrctrl->ddrckectrl);
 
-    /* Program EMIF instance */
-    config_ddr_phy(&ddr3_beagleblack_emif_reg_data, 0);
 
-    set_sdram_timings(&ddr3_beagleblack_emif_reg_data, 0);
-
-    config_sdram(&ddr3_beagleblack_emif_reg_data, 0); /*emif not equal to EMIF_4D5*/    
     /* UART Initialization */
     UARTSetup();
 }
@@ -2782,9 +1980,7 @@ unsigned int BlPlatformSPIImageCopy()
 
 unsigned int BlPlatformMMCSDImageCopy()
 {
-    UARTPuts("in BlPlatformMMCSDImageCopy\r\n\n", -1);
     HSMMCSDInit();
-    UARTPuts("in BlPlatformMMCSDImageCopyinit done\r\n\n", -1);
     HSMMCSDImageCopy();
 
     return (TRUE);
