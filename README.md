@@ -21,14 +21,14 @@ make release;
 Booting
 =======
 
-Copy to the primary partition of your MMCSD card the files 
-1. ../../../../../..//binary/armv7a/gcc/am335x/beaglebone/bootloader/Release_MMCSD/boot_ti.bin
-and rename it to MLO. This renaming is crucial because the Public ROM Code on the 
-AM335X SoC looks for a bootloader named MLO. The exact meaning of the word "MLO" remains 
-unknown. 
-2. Likewise, the application must be renamed as app, as the MLO looks for file named "app"
-to load into DDR.
+Copy to the primary partition of your MMCSD card the files:
 
+1. ../../../../../..//binary/armv7a/gcc/am335x/beaglebone/bootloader/Release_MMCSD/boot_ti.bin
+   and rename it to MLO. This renaming is crucial because the Public ROM Code on the 
+   AM335X SoC looks for a bootloader named MLO. The exact meaning of the word "MLO" remains 
+   unknown. 
+2. Likewise, the application must be renamed as app, as the MLO looks for file named "app"
+   to load into DDR.
 
 In order to boot using MMCSD card,
 hold down the S2 and then plug in power(either DC or USB). 
